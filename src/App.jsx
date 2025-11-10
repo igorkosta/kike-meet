@@ -1,8 +1,8 @@
 import './App.css'
-import MeetClone from './MeetClone.jsx'
+import MeetUI from './MeetUI.jsx'
 
 function App() {
-  return <MeetClone />
+  return <MeetUI />
 }
 
 export default App
