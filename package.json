@@ -1,5 +1,6 @@
 {
-  "name": "google-meet-clone",
+  "name": "kike-meet",
+  "homepage": "/kike-meet",
   "private": true,
   "version": "0.0.0",
   "type": "module",
