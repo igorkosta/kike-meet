@@ -135,7 +135,7 @@ export default function MeetUI() {
             onClick={() => startLocalStream(autoJoinTarget ? true : false)}
             className="bg-blue-600 px-3 mx-8 py-1 rounded"
           >
-            {autoJoinTarget ? "Join Call" : "Start Meeting"}
+            {autoJoinTarget ? "Join Call" : "Start Camera"}
           </button>
           <button
             onClick={copyInviteLink}
