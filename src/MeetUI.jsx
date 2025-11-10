@@ -118,7 +118,7 @@ export default function MeetUI() {
     const url = `${window.location.origin + window.location.pathname}?id=${myId}`;
     navigator.clipboard.writeText(url);
     addMessage("Copied invite link: " + url);
-    alert("Invite link copied!\n" + url);
+    alert("Invite link copied!\nSend it to the person you want to invite.\n" + url);
   }
 
   return (
@@ -133,9 +133,9 @@ export default function MeetUI() {
         <div className="flex gap-2">
           <button
             onClick={() => startLocalStream(autoJoinTarget ? true : false)}
-            className="bg-emerald-600 px-3 py-1 rounded"
+            className="bg-blue-600 px-3 mx-8 py-1 rounded"
           >
-            {autoJoinTarget ? "Join Call" : "Start Camera"}
+            {autoJoinTarget ? "Join Call" : "Start Meeting"}
           </button>
           <button
             onClick={copyInviteLink}
@@ -173,43 +173,15 @@ export default function MeetUI() {
               className="w-full h-full object-cover"
             />
             <div className="absolute top-2 left-2 text-xs bg-black/70 px-2 py-1 rounded">
-              {connected ? "Remote" : "Waiting..."}
+              {connected ? "Remote" : ""}
             </div>
           </div>
         </div>
 
-        {/* Controls + Logs */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 bg-neutral-800/50 p-3 rounded flex flex-col gap-2">
-            <input
-              value={remoteId}
-              onChange={(e) => setRemoteId(e.target.value)}
-              placeholder="Enter peer ID to call"
-              className="p-2 bg-neutral-900 rounded text-sm"
-            />
-            <button
-              onClick={() =>
-                localStream
-                  ? startCall(remoteId, localStream)
-                  : startLocalStream().then(() =>
-                      startCall(remoteId, localStream)
-                    )
-              }
-              className="bg-sky-600 px-3 py-1 rounded text-sm"
-            >
-              Call
-            </button>
-          </div>
+        {messages.map((m) => (
+          console.log(`events log: ${m.text}`)
+        ))}
 
-          <aside className="flex-1 bg-neutral-800/50 p-3 rounded flex flex-col gap-2 overflow-auto">
-            <h3 className="text-sm font-semibold">Events</h3>
-            <div className="text-xs space-y-1 overflow-auto">
-              {messages.map((m) => (
-                <div key={m.id}>{m.text}</div>
-              ))}
-            </div>
-          </aside>
-        </div>
       </main>
 
     </div>

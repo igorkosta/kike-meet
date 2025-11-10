@@ -1,8 +1,58 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #111; /* dark neutral background */
+  color: #f5f5f5;         /* light text for contrast */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  overflow: hidden;        /* prevent accidental scrollbars for full-screen UI */
+}
+
+/* Full-screen layout and base reset */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0f0f0f; /* deep neutral background */
+  color: #f5f5f5;            /* high-contrast text color */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  overflow: hidden;           /* prevent accidental scrollbars */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Optional: make smooth transitions when resizing */
+* {
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Make video elements consistent */
+video {
+  display: block;
+  background: #000;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+/* Optional: dark, subtle scrollbar for consistency */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }
 
 .logo {

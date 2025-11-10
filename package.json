@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.553.0",
     "peerjs": "^1.5.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "simple-peer": "^9.11.1",
+    "tailwindcss": "^4.1.17",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
