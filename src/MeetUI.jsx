@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
-import { Mic, MicOff, Video, VideoOff, Copy } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, Info } from "lucide-react";
 import MeetingInfo from "./components/MeetingInfo";
 
 export default function MeetUI() {
@@ -17,6 +17,7 @@ export default function MeetUI() {
   const [interactionReady, setInteractionReady] = useState(false);
   const [micEnabled, setMicEnabled] = useState(true);
   const [camEnabled, setCamEnabled] = useState(true);
+  const [showMeetingInfo, setShowMeetingInfo] = useState(true);
 
 
   // Create PeerJS instance
@@ -119,13 +120,6 @@ export default function MeetUI() {
     setMessages((prev) => [...prev, { id: Date.now(), text: msg }]);
   }
 
-  const meetingUrl = `${window.location.origin + window.location.pathname}?id=${myId}`;
-
-  function copyMeetingLink() {
-    navigator.clipboard.writeText(meetingUrl);
-    // addMessage("Copied invite link: " + url);
-    // alert("Invite link copied!\nSend it to the person you want to invite.\n" + url);
-  }
 
     // 🎤 Toggle mic
   function toggleMic() {
@@ -151,7 +145,7 @@ export default function MeetUI() {
     <div className="w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
       <header className="p-4 bg-neutral-800 flex justify-between items-center">
         <div>
-          <h1 className="text-lg font-bold">KiKé Meet (Alpha)</h1>
+          <h3>KiKé Meet (Alpha)</h3>
           <div className="text-sm text-neutral-400">
             Your ID: <span className="font-mono">{myId || "Connecting..."}</span>
           </div>
@@ -162,13 +156,6 @@ export default function MeetUI() {
             className="bg-blue-600 px-3 mx-8 py-1 rounded"
           >
             {autoJoinTarget ? "Join Call" : "Start Camera"}
-          </button>
-          <button
-            onClick={copyMeetingLink}
-            disabled={!myId}
-            className="bg-sky-600 px-3 py-1 rounded"
-          >
-            Copy Meeting Link
           </button>
         </div>
       </header>
@@ -210,11 +197,20 @@ export default function MeetUI() {
 
       </main>
 
-      {/* FLOATING MEETING LINK BOX */}
-      <MeetingInfo meetingUrl={meetingUrl} copyMeetingLink={copyMeetingLink} />
+      {showMeetingInfo && (
+        <MeetingInfo
+          meetingId={myId}
+          closeWindow={() => setShowMeetingInfo(false)}
+        />
+      )}
 
       {/* FOOTER TOOLBAR */}
-      <footer className="bg-neutral-800 p-3 flex items-center justify-center gap-6">
+      <footer
+        className="fixed bottom-0 left-0 w-full z-20 bg-neutral-800/95 backdrop-blur-md
+                   flex items-center justify-center gap-6 py-3
+                   border-t border-neutral-700
+                   safe-area-inset-bottom"
+      >
         <button
           onClick={toggleMic}
           className={`p-3 rounded-full ${
@@ -232,8 +228,16 @@ export default function MeetUI() {
         >
           {camEnabled ? <Video size={22} /> : <VideoOff size={22} />}
         </button>
-      </footer>
 
+        <button
+          onClick={() => setShowMeetingInfo((v) => !v)}
+          className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-600
+                     flex items-center justify-center transition-colors duration-150"
+          title="Meeting info"
+        >
+          <Info size={20} className="text-neutral-100" />
+        </button>
+      </footer>
     </div>
   );
 }
