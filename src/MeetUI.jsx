@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
+import { Mic, MicOff, Video, VideoOff, Copy } from "lucide-react";
+import MeetingInfo from "./components/MeetingInfo";
 
 export default function MeetUI() {
   const localVideoRef = useRef(null);
@@ -13,6 +15,9 @@ export default function MeetUI() {
   const [messages, setMessages] = useState([]);
   const [autoJoinTarget, setAutoJoinTarget] = useState(null);
   const [interactionReady, setInteractionReady] = useState(false);
+  const [micEnabled, setMicEnabled] = useState(true);
+  const [camEnabled, setCamEnabled] = useState(true);
+
 
   // Create PeerJS instance
   useEffect(() => {
@@ -26,7 +31,7 @@ export default function MeetUI() {
       const params = new URLSearchParams(window.location.search);
       const remote = params.get("id");
       if (remote) {
-        addMessage(`Invite link detected → ${remote}`);
+        addMessage(`Meeting link detected → ${remote}`);
         setRemoteId(remote);
         setAutoJoinTarget(remote);
       }
@@ -114,11 +119,32 @@ export default function MeetUI() {
     setMessages((prev) => [...prev, { id: Date.now(), text: msg }]);
   }
 
-  function copyInviteLink() {
-    const url = `${window.location.origin + window.location.pathname}?id=${myId}`;
-    navigator.clipboard.writeText(url);
-    addMessage("Copied invite link: " + url);
-    alert("Invite link copied!\nSend it to the person you want to invite.\n" + url);
+  const meetingUrl = `${window.location.origin + window.location.pathname}?id=${myId}`;
+
+  function copyMeetingLink() {
+    navigator.clipboard.writeText(meetingUrl);
+    // addMessage("Copied invite link: " + url);
+    // alert("Invite link copied!\nSend it to the person you want to invite.\n" + url);
+  }
+
+    // 🎤 Toggle mic
+  function toggleMic() {
+    if (!localStream) return;
+    const audioTrack = localStream.getAudioTracks()[0];
+    if (audioTrack) {
+      audioTrack.enabled = !audioTrack.enabled;
+      setMicEnabled(audioTrack.enabled);
+    }
+  }
+
+  // 🎥 Toggle camera
+  function toggleCam() {
+    if (!localStream) return;
+    const videoTrack = localStream.getVideoTracks()[0];
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled;
+      setCamEnabled(videoTrack.enabled);
+    }
   }
 
   return (
@@ -138,11 +164,11 @@ export default function MeetUI() {
             {autoJoinTarget ? "Join Call" : "Start Camera"}
           </button>
           <button
-            onClick={copyInviteLink}
+            onClick={copyMeetingLink}
             disabled={!myId}
             className="bg-sky-600 px-3 py-1 rounded"
           >
-            Copy Invite Link
+            Copy Meeting Link
           </button>
         </div>
       </header>
@@ -183,6 +209,30 @@ export default function MeetUI() {
         ))}
 
       </main>
+
+      {/* FLOATING MEETING LINK BOX */}
+      <MeetingInfo meetingUrl={meetingUrl} copyMeetingLink={copyMeetingLink} />
+
+      {/* FOOTER TOOLBAR */}
+      <footer className="bg-neutral-800 p-3 flex items-center justify-center gap-6">
+        <button
+          onClick={toggleMic}
+          className={`p-3 rounded-full ${
+            micEnabled ? "bg-neutral-700" : "bg-red-600"
+          }`}
+        >
+          {micEnabled ? <Mic size={22} /> : <MicOff size={22} />}
+        </button>
+
+        <button
+          onClick={toggleCam}
+          className={`p-3 rounded-full ${
+            camEnabled ? "bg-neutral-700" : "bg-red-600"
+          }`}
+        >
+          {camEnabled ? <Video size={22} /> : <VideoOff size={22} />}
+        </button>
+      </footer>
 
     </div>
   );
