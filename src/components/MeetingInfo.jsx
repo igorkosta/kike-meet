@@ -4,7 +4,7 @@ import { Copy } from "lucide-react";
 export default function MeetingInfo({ closeWindow, meetingId }) {
   const meetingUrl = `${window.location.origin + window.location.pathname}?id=${meetingId}`;
 
-  function copyMeetingLink() {
+  async function copyMeetingLink() {
     navigator.clipboard.writeText(meetingUrl);
   }
 
@@ -36,9 +36,9 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
         </a>
         <button
           onClick={copyMeetingLink}
-          className="flex items-center gap-1 bg-neutral-700 hover:bg-neutral-600 px-2 py-1 rounded text-xs"
+          className="flex items-center gap-1 px-2 py-1 rounded text-xs"
         >
-          <Copy size={14} /> Copy
+          <Copy size={14} />
         </button>
       </div>
 

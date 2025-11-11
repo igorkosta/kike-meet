@@ -2,11 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
 import { Mic, MicOff, Video, VideoOff, Info } from "lucide-react";
+import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
 
 export default function MeetUI() {
+  const isMobile = useIsMobile();
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
+  const localStreamRef = useRef(null);
+
   const [peer, setPeer] = useState(null);
   const [myId, setMyId] = useState("");
   const [remoteId, setRemoteId] = useState("");
@@ -19,6 +23,16 @@ export default function MeetUI() {
   const [camEnabled, setCamEnabled] = useState(true);
   const [showMeetingInfo, setShowMeetingInfo] = useState(true);
 
+
+  // Start local camera
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      localStreamRef.current = stream;
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = stream;
+      }
+    });
+  }, []);
 
   // Create PeerJS instance
   useEffect(() => {
@@ -74,6 +88,11 @@ export default function MeetUI() {
       startLocalStream(true);
     }
   }, [interactionReady]);
+
+  useEffect(() => {
+    if (localStreamRef.current && localVideoRef.current)
+      localVideoRef.current.srcObject = localStreamRef.current;
+  }, [isMobile]);
 
   async function ensureLocalStream() {
     if (localStream) return localStream;
@@ -163,32 +182,39 @@ export default function MeetUI() {
       <main className="flex-1 flex flex-col items-stretch justify-center bg-neutral-900 p-4">
         {/* Video area */}
         <div className="flex flex-1 flex-col md:flex-row items-center justify-center gap-4 mb-4">
-          {/* Local video */}
-          <div className="relative flex-1 max-w-[50%] bg-black rounded-xl overflow-hidden aspect-video">
-            <video
-              ref={localVideoRef}
-              autoPlay
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-2 left-2 text-xs bg-black/70 px-2 py-1 rounded">
-              You
-            </div>
-          </div>
 
-          {/* Remote video */}
-          <div className="relative flex-1 max-w-[50%] bg-black rounded-xl overflow-hidden aspect-video">
-            <video
-              ref={remoteVideoRef}
-              autoPlay
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-2 left-2 text-xs bg-black/70 px-2 py-1 rounded">
-              {connected ? "Remote" : ""}
+          { isMobile ? (
+            <div className="sm:hidden w-full h-full relative">
+              <video
+                ref={remoteVideoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              {/* small self-view */}
+              <video
+                ref={localVideoRef}
+                autoPlay
+                muted
+                playsInline
+                className="absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg"
+              />
             </div>
-          </div>
+          ) : (
+            <div className="flex w-full h-full">
+              <div className="relative w-1/2 h-full">
+                <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover rounded-xl" />
+                {/* 🏷️ Local participant name */}
+                <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
+              </div>
+              <div className="relative w-1/2 h-full">
+                <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />
+                {/* 🏷️ Remote participant name */}
+                <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">Guest</div>
+              </div>
+            </div>
+          )}
+
         </div>
 
         {messages.map((m) => (
