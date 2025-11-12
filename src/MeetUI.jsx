@@ -197,8 +197,8 @@ export default function MeetUI() {
               />
             </div>
           ) : (
-            <div className="flex w-full h-full">
-              <div className="relative w-1/2 h-full">
+            <div className="flex w-full h-[calc(100vh-80px)] gap-4">
+              <div className="relative w-1/2 h-auto">
                 <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover rounded-xl" />
                 {/* 🏷️ Local participant name */}
                 <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
