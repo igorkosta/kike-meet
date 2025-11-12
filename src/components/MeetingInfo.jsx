@@ -14,7 +14,7 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
                     border border-neutral-700 z-20">
       <div className="flex justify-between items-start">
         <h2 className="text-base font-semibold text-neutral-200">
-          Meeting ready
+          Your Meeting is Ready
         </h2>
         <button
           onClick={closeWindow}

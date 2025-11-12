@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Mic, MicOff, Video, VideoOff, Info } from "lucide-react";
 import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
+import ShareMeetingButton from "./components/ShareMeetingButton";
 
 export default function MeetUI() {
   const isMobile = useIsMobile();
@@ -170,12 +171,7 @@ export default function MeetUI() {
           </div>
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={() => startLocalStream(autoJoinTarget ? true : false)}
-            className="bg-blue-600 px-3 mx-8 py-1 rounded"
-          >
-            {autoJoinTarget ? "Join Call" : "Start Camera"}
-          </button>
+          <ShareMeetingButton meetingId={myId} />
         </div>
       </header>
 
