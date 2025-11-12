@@ -23,7 +23,7 @@ export default function ShareMeetingButton({ meetingId }) {
     } else {
       // Fallback for desktop or unsupported browsers
       navigator.clipboard.writeText(meetingUrl);
-      alert("Meeting link copied to clipboard!");
+      console.log("Meeting link copied to clipboard!");
     }
   }
 
