@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Mic, MicOff, Video, VideoOff, Info } from "lucide-react";
 import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
-import ShareMeetingButton from "./components/ShareMeetingButton";
+import Header from "./components/Header";
 
 export default function MeetUI() {
   const isMobile = useIsMobile();
@@ -163,17 +163,8 @@ export default function MeetUI() {
 
   return (
     <div className="w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
-      <header className="p-4 bg-neutral-800 flex justify-between items-center">
-        <div>
-          <h3>KiKé Meet (Alpha)</h3>
-          <div className="text-sm text-neutral-400">
-            Your ID: <span className="font-mono">{myId || "Connecting..."}</span>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <ShareMeetingButton meetingId={myId} />
-        </div>
-      </header>
+
+      <Header myId={myId} />
 
       <main className="flex-1 flex flex-col items-stretch justify-center bg-neutral-900 p-4">
         {/* Video area */}
@@ -235,6 +226,7 @@ export default function MeetUI() {
       >
         <button
           onClick={toggleMic}
+          disabled={!localStream}
           className={`p-3 rounded-full ${
             micEnabled ? "bg-neutral-700" : "bg-red-600"
           }`}
@@ -244,6 +236,7 @@ export default function MeetUI() {
 
         <button
           onClick={toggleCam}
+          disabled={!localStream}
           className={`p-3 rounded-full ${
             camEnabled ? "bg-neutral-700" : "bg-red-600"
           }`}
