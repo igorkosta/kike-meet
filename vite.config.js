@@ -11,11 +11,11 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
+      includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "KiKe Meet",
-        short_name: "KiKe",
-        description: "Call your friend or your lover",
+        name: "KiKe Buzz",
+        short_name: "Buzz",
+        description: "Communication Without Surveillance",
         theme_color: "#000000",
         background_color: "#000000",
         display: "standalone",
