@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
-import { Mic, MicOff, Video, VideoOff, Info } from "lucide-react";
+import { VideoOff } from "lucide-react";
 import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
+import InitOverlay from "./components/InitOverlay";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default function MeetUI() {
   const isMobile = useIsMobile();
@@ -23,6 +25,12 @@ export default function MeetUI() {
   const [micEnabled, setMicEnabled] = useState(true);
   const [camEnabled, setCamEnabled] = useState(true);
   const [showMeetingInfo, setShowMeetingInfo] = useState(true);
+
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const joiningId = searchParams.get("id");
+  const isJoining = Boolean(joiningId);
+  const [showInitOverlay, setShowInitOverlay] = useState(isJoining);
 
 
   // Start local camera
@@ -72,6 +80,7 @@ export default function MeetUI() {
     };
   }, []);
 
+
   // Listen for first click/tap → safe to start media
   useEffect(() => {
     function handleFirstInteraction() {
@@ -81,14 +90,29 @@ export default function MeetUI() {
     return () =>
       window.removeEventListener("click", handleFirstInteraction, { once: true });
   }, []);
+  // function handleFirstInteraction() {
+  //   console.log("User interaction detected");
+  //   setInteractionReady(true);
+  //   window.addEventListener("click", handleFirstInteraction, { once: true });
+  //   return () =>
+  //     window.removeEventListener("click", handleFirstInteraction, { once: true });
+  // }
 
-  useEffect(() => {
-    // Auto-start only if this is a join link and user has interacted
-    if (interactionReady && autoJoinTarget && !connected) {
+  function firstInteraction() {
+    setInteractionReady(true);
+    if (autoJoinTarget && !connected) {
       addMessage("User interacted — starting camera and joining...");
       startLocalStream(true);
+      setShowInitOverlay(false);
     }
-  }, [interactionReady]);
+  }
+  // useEffect(() => {
+  //   // Auto-start only if this is a join link and user has interacted
+  //   if (interactionReady && autoJoinTarget && !connected) {
+  //     addMessage("User interacted — starting camera and joining...");
+  //     startLocalStream(true);
+  //   }
+  // }, [interactionReady]);
 
   useEffect(() => {
     if (localStreamRef.current && localVideoRef.current)
@@ -102,6 +126,7 @@ export default function MeetUI() {
         video: true,
         audio: true,
       });
+
       setLocalStream(stream);
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
       addMessage("Camera ready.");
@@ -132,6 +157,7 @@ export default function MeetUI() {
     call.on("close", () => {
       setConnected(false);
       addMessage("Call ended");
+      alert("Call ended");
     });
     call.on("error", (err) => addMessage("Call error: " + err.message));
   }
@@ -139,7 +165,6 @@ export default function MeetUI() {
   function addMessage(msg) {
     setMessages((prev) => [...prev, { id: Date.now(), text: msg }]);
   }
-
 
     // 🎤 Toggle mic
   function toggleMic() {
@@ -161,8 +186,23 @@ export default function MeetUI() {
     }
   }
 
+  const endCall = () => {
+    // Stop local tracks
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach(t => t.stop());
+      localStreamRef.current = null;
+    }
+    setConnected(false);
+    // alert("Call ended");
+    window.opener = self
+    window.close()
+  };
+
   return (
     <div className="w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
+      {showInitOverlay && (
+        <InitOverlay handleFirstInteraction={firstInteraction} />
+      )}
 
       <Header myId={myId} />
 
@@ -176,13 +216,13 @@ export default function MeetUI() {
                 ref={remoteVideoRef}
                 autoPlay
                 playsInline
-                className="w-full h-full object-cover"
+                muted
+                className={`w-full h-full object-cover ${!camEnabled ? "opacity-0" : "opacity-100"}`}
               />
               {/* small self-view */}
               <video
                 ref={localVideoRef}
                 autoPlay
-                muted
                 playsInline
                 className="absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg"
               />
@@ -190,9 +230,14 @@ export default function MeetUI() {
           ) : (
             <div className="flex w-full h-[calc(100vh-80px)] gap-4">
               <div className="relative w-1/2 h-auto">
-                <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover rounded-xl" />
+                <video ref={localVideoRef} autoPlay muted playsInline className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
                 {/* 🏷️ Local participant name */}
                 <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
+                  {!camEnabled && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
+                      <VideoOff size={48} />
+                    </div>
+                  )}
               </div>
               <div className="relative w-1/2 h-full">
                 <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />
@@ -218,41 +263,15 @@ export default function MeetUI() {
       )}
 
       {/* FOOTER TOOLBAR */}
-      <footer
-        className="fixed bottom-0 left-0 w-full z-20 bg-neutral-800/95 backdrop-blur-md
-                   flex items-center justify-center gap-6 py-3
-                   border-t border-neutral-700
-                   safe-area-inset-bottom"
-      >
-        <button
-          onClick={toggleMic}
-          disabled={!localStream}
-          className={`p-3 rounded-full ${
-            micEnabled ? "bg-neutral-700" : "bg-red-600"
-          }`}
-        >
-          {micEnabled ? <Mic size={22} /> : <MicOff size={22} />}
-        </button>
-
-        <button
-          onClick={toggleCam}
-          disabled={!localStream}
-          className={`p-3 rounded-full ${
-            camEnabled ? "bg-neutral-700" : "bg-red-600"
-          }`}
-        >
-          {camEnabled ? <Video size={22} /> : <VideoOff size={22} />}
-        </button>
-
-        <button
-          onClick={() => setShowMeetingInfo((v) => !v)}
-          className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-600
-                     flex items-center justify-center transition-colors duration-150"
-          title="Meeting info"
-        >
-          <Info size={20} className="text-neutral-100" />
-        </button>
-      </footer>
+      <Footer
+        toggleMic={toggleMic}
+        toggleCam={toggleCam}
+        endCall={endCall}
+        localStream={localStream}
+        micEnabled={micEnabled}
+        camEnabled={camEnabled}
+        setShowMeetingInfo={setShowMeetingInfo}
+      />
     </div>
   );
 }

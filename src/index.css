@@ -42,7 +42,6 @@ button {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  background-color: #131313 !important;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -97,6 +96,19 @@ button:disabled::after {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #131313;
+  }
+}
+
+@theme {
+  --animate-wiggle: wiggle 0.2s ease-in-out infinite;
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
   }
 }
