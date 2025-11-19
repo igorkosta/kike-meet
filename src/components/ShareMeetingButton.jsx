@@ -31,7 +31,7 @@ export default function ShareMeetingButton({ meetingId }) {
     <div className="text-xs">
       <button
         onClick={shareMeeting}
-        className="text-sm flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        className="text-sm flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-md hover:bg-grey-700"
       >
         <Share2 size={18} />
         Share Meeting

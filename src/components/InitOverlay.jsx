@@ -34,7 +34,7 @@ export default function InitOverlay({ handleFirstInteraction }) {
         <p className="opacity-80">
           We need your permission to start the camera and microphone.
         </p>
-        <button className="bg-green-600 px-6 py-3 rounded-full text-white shadow-md">
+        <button className="bg-green-600 w-25 h-25 rounded-full text-white shadow-md items-center justify-center flex mx-auto">
           <PhoneCall size={50} className="animate-wiggle"/>
         </button>
       </div>

@@ -9,13 +9,13 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
   }
 
   return (
-    <div className="absolute bottom-24 left-4 bg-neutral-800/80 backdrop-blur-md
+    <div className="absolute w-fit bottom-20 left-4 bg-neutral-800/80 backdrop-blur-md
                     rounded-xl p-4 flex flex-col gap-2 text-sm shadow-lg w-72
                     border border-neutral-700 z-20">
       <div className="flex justify-between items-start">
-        <h2 className="text-base font-semibold text-neutral-200">
-          Your Meeting is Ready
-        </h2>
+        <h3 className="text-base text-neutral-200">
+          Your meeting's ready
+        </h3>
         <button
           onClick={closeWindow}
           className="text-neutral-400 hover:text-neutral-200"
@@ -26,14 +26,11 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
       </div>
 
       <div className="flex items-center justify-between gap-2 bg-neutral-900/60 rounded-lg px-3 py-2">
-        <a
-          href={meetingUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="truncate text-sky-400 hover:underline text-xs"
+        <span
+          className="truncate text-grey-400 text-xs"
         >
           {meetingUrl}
-        </a>
+        </span>
         <button
           onClick={copyMeetingLink}
           className="flex items-center gap-1 px-2 py-1 rounded text-xs"
