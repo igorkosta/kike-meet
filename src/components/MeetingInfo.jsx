@@ -18,7 +18,6 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
         </h3>
         <button
           onClick={closeWindow}
-          className="text-neutral-400 hover:text-neutral-200"
           title="Close"
         >
           ✕
