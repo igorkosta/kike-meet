@@ -1,7 +1,7 @@
 import React from "react";
 import { Mic, MicOff, Video, VideoOff, Info, PhoneOff } from "lucide-react";
 
-export default function Footer({ toggleMic, toggleCam, endCall, localStream, micEnabled, camEnabled, setShowMeetingInfo }) {
+export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camEnabled, setShowMeetingInfo }) {
   return (
     <footer
       className="fixed bottom-0 left-0 w-full z-20 bg-neutral-800/95 backdrop-blur-md
@@ -11,7 +11,6 @@ export default function Footer({ toggleMic, toggleCam, endCall, localStream, mic
     >
       <button
         onClick={toggleMic}
-        disabled={!localStream}
         className={`p-3 rounded-full bg-black-600 ${
           micEnabled ? "bg-neutral-700" : "bg-red-600"
         }`}
@@ -22,7 +21,6 @@ export default function Footer({ toggleMic, toggleCam, endCall, localStream, mic
 
       <button
         onClick={toggleCam}
-        disabled={!localStream}
         className={`p-3 rounded-full ${
           camEnabled ? "bg-neutral-700" : "bg-red-600"
         }`}

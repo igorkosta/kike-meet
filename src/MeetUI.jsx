@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
-import { VideoOff } from "lucide-react";
+import { MicOff, VideoOff } from "lucide-react";
 import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
 import InitOverlay from "./components/InitOverlay";
@@ -169,6 +169,7 @@ export default function MeetUI() {
 
     // 🎤 Toggle mic
   function toggleMic() {
+    setMicEnabled(prev => !prev);
     if (!localStream) return;
     const audioTrack = localStream.getAudioTracks()[0];
     if (audioTrack) {
@@ -179,6 +180,7 @@ export default function MeetUI() {
 
   // 🎥 Toggle camera
   function toggleCam() {
+    setCamEnabled(prev => !prev);
     if (!localStream) return;
     const videoTrack = localStream.getVideoTracks()[0];
     if (videoTrack) {
@@ -234,11 +236,14 @@ export default function MeetUI() {
                 <video ref={localVideoRef} autoPlay muted playsInline className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
                 {/* 🏷️ Local participant name */}
                 <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
-                  {!camEnabled && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
-                      <VideoOff size={48} />
-                    </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
+                  {!micEnabled && (
+                    <MicOff size={48} />
                   )}
+                  {!camEnabled && (
+                    <VideoOff size={48} />
+                  )}
+                </div>
               </div>
               <div className="relative w-1/2 h-full">
                 <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />
