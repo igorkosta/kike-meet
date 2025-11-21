@@ -1,7 +1,9 @@
 import React from "react";
 import ShareMeetingButton from "./ShareMeetingButton";
+import FeedbackButton from "./FeedbackButton";
 
-export default function Header({ myId }) {
+export default function Header({ myId, setShowFeedbackOverlay }) {
+
   return (
     <header className="p-4 bg-neutral-800 flex justify-between items-center">
       <div className="flex items-center space-x-3 mb-2 sm:mb-0">
@@ -15,6 +17,7 @@ export default function Header({ myId }) {
         </div>
       </div>
       <div className="flex gap-2">
+        <FeedbackButton setShowFeedbackOverlay={setShowFeedbackOverlay}/>
         <ShareMeetingButton meetingId={myId} />
       </div>
     </header>

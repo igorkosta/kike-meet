@@ -5,6 +5,7 @@ import { VideoOff } from "lucide-react";
 import useIsMobile from "./hooks/useIsMobile";
 import MeetingInfo from "./components/MeetingInfo";
 import InitOverlay from "./components/InitOverlay";
+import FeedbackOverlay from "./components/FeedbackOverlay";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -25,7 +26,7 @@ export default function MeetUI() {
   const [micEnabled, setMicEnabled] = useState(true);
   const [camEnabled, setCamEnabled] = useState(true);
   const [showMeetingInfo, setShowMeetingInfo] = useState(true);
-
+  const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false);
 
   const searchParams = new URLSearchParams(window.location.search);
   const joiningId = searchParams.get("id");
@@ -204,7 +205,7 @@ export default function MeetUI() {
         <InitOverlay handleFirstInteraction={firstInteraction} />
       )}
 
-      <Header myId={myId} />
+      <Header myId={myId} setShowFeedbackOverlay={setShowFeedbackOverlay}/>
 
       <main className="flex-1 flex flex-col items-stretch justify-center bg-neutral-900 p-4">
         {/* Video area */}
@@ -262,6 +263,11 @@ export default function MeetUI() {
         />
       )}
 
+      <FeedbackOverlay
+        show={showFeedbackOverlay}
+        setShowFeedbackOverlay={setShowFeedbackOverlay}
+        onClose={() => setShowFeedbackOverlay(false)}
+      />
       {/* FOOTER TOOLBAR */}
       <Footer
         toggleMic={toggleMic}

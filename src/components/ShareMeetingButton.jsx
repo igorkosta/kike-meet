@@ -1,7 +1,9 @@
 import React from "react";
 import { Share2 } from "lucide-react";
+import useIsMobile from "../hooks/useIsMobile";
 
 export default function ShareMeetingButton({ meetingId }) {
+  const isMobile = useIsMobile();
   const url = `${window.location.origin + window.location.pathname}?id=${meetingId}`;
 
 
@@ -31,10 +33,10 @@ export default function ShareMeetingButton({ meetingId }) {
     <div className="text-xs">
       <button
         onClick={shareMeeting}
-        className="text-sm flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-md hover:bg-grey-700"
+        className="text-sm flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-full hover:bg-grey-700"
       >
         <Share2 size={18} />
-        Share Meeting
+        { isMobile ? '' : 'Share Meeting' }
       </button>
     </div>
   )
