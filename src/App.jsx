@@ -1,10 +1,16 @@
+import { Routes, Route } from "react-router-dom";
 import './App.css'
 import './index.css'
-// import MeetUICrowd from './MeetUICrowd.jsx'
+import Landing from './Landing.jsx'
 import MeetUI from './MeetUI.jsx'
 
 function App() {
-  return <MeetUI />
+  return (
+    <Routes>
+      <Route path="/" element={<MeetUI />} />
+      <Route path="/landing" element={<Landing />} />
+    </Routes>
+  )
 }
 
 export default App
