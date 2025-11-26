@@ -8,12 +8,14 @@ import InitOverlay from "./components/InitOverlay";
 import FeedbackOverlay from "./components/FeedbackOverlay";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { CameraManager } from "./utils/cameraManager";
 
 export default function MeetUI() {
   const isMobile = useIsMobile();
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const localStreamRef = useRef(null);
+  const currentCallRef = useRef(null);
 
   const [peer, setPeer] = useState(null);
   const [myId, setMyId] = useState("");
@@ -33,6 +35,17 @@ export default function MeetUI() {
   const isJoining = Boolean(joiningId);
   const [showInitOverlay, setShowInitOverlay] = useState(isJoining);
 
+
+  const cameraManager = useRef(
+    new CameraManager({
+      localStreamRef,
+      localVideoRef,
+      currentCallRef,
+      onCameraStateChange: (state) => {
+        setCamEnabled(state); // <— sync to component
+      }
+    })
+  ).current;
 
   // Start local camera
   useEffect(() => {
@@ -179,15 +192,62 @@ export default function MeetUI() {
   }
 
   // 🎥 Toggle camera
-  function toggleCam() {
-    setCamEnabled(prev => !prev);
-    if (!localStream) return;
-    const videoTrack = localStream.getVideoTracks()[0];
-    if (videoTrack) {
-      videoTrack.enabled = !videoTrack.enabled;
-      setCamEnabled(videoTrack.enabled);
+  const toggleCam = async () => {
+    if (camEnabled) {
+      // Turn camera OFF
+      disableCamera();
+    } else {
+      // Turn camera ON
+      await enableCamera();
     }
-  }
+  };
+  const disableCamera = () => {
+    if (localStreamRef.current) {
+      localStreamRef.current.getVideoTracks().forEach(track => {
+        track.stop();   // ← physically turns the camera OFF
+      });
+    }
+
+    setCamEnabled(false);
+  };
+
+  const enableCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+
+      const newVideoTrack = stream.getVideoTracks()[0];
+
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = stream;
+      }
+      // if there's an existing local stream, add the new video track to it
+      if (localStreamRef.current) {
+        const audioTracks = localStreamRef.current.getAudioTracks();
+          localStreamRef.current = new MediaStream([
+            ...audioTracks,
+            newVideoTrack
+          ]);
+      } else {
+        localStreamRef.current = stream;
+      }
+
+      setCamEnabled(true);
+    } catch (err) {
+      console.error("Could not enable camera", err);
+    }
+  };
+  // function toggleCam() {
+  //   setCamEnabled(prev => !prev);
+  //   if (!localStream) return;
+  //   const videoTrack = localStream.getVideoTracks()[0];
+  //   if (videoTrack) {
+  //     videoTrack.enabled = !videoTrack.enabled;
+  //     setCamEnabled(videoTrack.enabled);
+  //   }
+  // }
 
   const endCall = () => {
     // Stop local tracks
@@ -220,32 +280,39 @@ export default function MeetUI() {
                 autoPlay
                 playsInline
                 muted
-                className={`w-full h-full object-cover ${!camEnabled ? "opacity-0" : "opacity-100"}`}
+                className="w-full h-full object-cover"
               />
               {/* small self-view */}
               <video
                 ref={localVideoRef}
                 autoPlay
                 playsInline
-                className="absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg"
+                className={`absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg ${!camEnabled ? "opacity-0 border border-neutral-700" : "opacity-100"}`}
               />
             </div>
           ) : (
             <div className="flex w-full h-[calc(100vh-80px)] gap-4">
               <div className="relative w-1/2 h-auto">
-                <video ref={localVideoRef} autoPlay muted playsInline className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
+                <video
+                  ref={localVideoRef}
+                  autoPlay
+                  muted
+                  playsInline
+                  className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
                 {/* 🏷️ Local participant name */}
-                <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
+                <div className="z-20 absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
                   {!micEnabled && (
-                    <MicOff size={48} />
+                    <div className="z-20 absolute top-2 right-2 bg-black/60 p-1.5 rounded-full">
+                      <MicOff className="w-5 h-5 text-white" />
+                    </div>
                   )}
-                  {!camEnabled && (
+                {!camEnabled && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
                     <VideoOff size={48} />
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
-              <div className="relative w-1/2 h-full">
+              <div className="relative w-1/2 h-auto">
                 <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />
                 {/* 🏷️ Remote participant name */}
                 <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">Guest</div>
@@ -276,7 +343,7 @@ export default function MeetUI() {
       {/* FOOTER TOOLBAR */}
       <Footer
         toggleMic={toggleMic}
-        toggleCam={toggleCam}
+        toggleCam={cameraManager.toggleCamera}
         endCall={endCall}
         localStream={localStream}
         micEnabled={micEnabled}
