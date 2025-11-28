@@ -25,6 +25,7 @@ export default function MeetUI() {
   const [interactionReady, setInteractionReady] = useState(false);
   const [micEnabled, setMicEnabled] = useState(true);
   const [camEnabled, setCamEnabled] = useState(true);
+  const [remoteCameraEnabled, setRemoteCameraEnabled] = useState(true);
   const [showMeetingInfo, setShowMeetingInfo] = useState(true);
   const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false);
 
@@ -73,6 +74,13 @@ export default function MeetUI() {
           addMessage(`Connected with ${call.peer}`);
         });
       });
+    });
+
+    newPeer.on("data", (msg) => {
+      console.log("Remote cam toggle", msg);
+      if (msg.type === "camera") {
+        setRemoteCameraEnabled(msg.enabled);
+      }
     });
 
     return () => {
@@ -155,6 +163,7 @@ export default function MeetUI() {
       setConnected(true);
       addMessage(`Connected with ${targetId}`);
     });
+
     call.on("close", () => {
       setConnected(false);
       addMessage("Call ended");
@@ -186,6 +195,12 @@ export default function MeetUI() {
     if (videoTrack) {
       videoTrack.enabled = !videoTrack.enabled;
       setCamEnabled(videoTrack.enabled);
+      console.log('localStreamRef', localStreamRef.current)
+      localStreamRef.current?.send({
+        type: "camera",
+        enabled: videoTrack.enabled,
+      });
+
     }
   }
 
@@ -202,7 +217,7 @@ export default function MeetUI() {
   };
 
   return (
-    <div className="w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
+    <div className="overflow-hidden w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
       {showInitOverlay && (
         <InitOverlay handleFirstInteraction={firstInteraction} />
       )}
@@ -220,30 +235,34 @@ export default function MeetUI() {
                 autoPlay
                 playsInline
                 muted
-                className={`w-full h-full object-cover ${!camEnabled ? "opacity-0" : "opacity-100"}`}
+                className="w-full h-full object-cover"
               />
               {/* small self-view */}
               <video
                 ref={localVideoRef}
                 autoPlay
                 playsInline
-                className="absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg"
+                className={`absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg ${!camEnabled ? "opacity-0" : "opacity-100"}`}
               />
             </div>
           ) : (
             <div className="flex w-full h-[calc(100vh-80px)] gap-4">
               <div className="relative w-1/2 h-auto">
-                <video ref={localVideoRef} autoPlay muted playsInline className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
+                <video
+                  ref={localVideoRef} autoPlay muted playsInline
+                  className={`w-full h-full object-cover rounded-xl ${!camEnabled ? "opacity-0" : "opacity-100"}`} />
                 {/* 🏷️ Local participant name */}
-                <div className="absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
+                <div className="z-20 absolute top-3 left-3 bg-black/60 px-3 py-1 text-sm rounded-md">You</div>
                   {!micEnabled && (
-                    <MicOff size={48} />
+                    <div className="z-20 absolute top-2 right-2 bg-black/60 p-1.5 rounded-full">
+                      <MicOff className="w-5 h-5 text-white" />
+                    </div>
                   )}
                   {!camEnabled && (
-                    <VideoOff size={48} />
+                    <div className="rounded-xl absolute inset-0 bg-black/70 flex items-center justify-center">
+                      <VideoOff className="w-16 h-16 text-white" />
+                    </div>
                   )}
-                </div>
               </div>
               <div className="relative w-1/2 h-full">
                 <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />

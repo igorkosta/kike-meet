@@ -31,7 +31,7 @@ export default function LandingPage() {
           {/* Start Meeting */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/meet")}
               className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition">
               Start a meeting
             </button>

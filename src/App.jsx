@@ -7,8 +7,8 @@ import MeetUI from './MeetUI.jsx'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<MeetUI />} />
-      <Route path="/landing" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/meet" element={<MeetUI />} />
     </Routes>
   )
 }
