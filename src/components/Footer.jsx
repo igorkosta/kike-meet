@@ -1,18 +1,29 @@
 import React from "react";
 import { Mic, MicOff, Video, VideoOff, Info, PhoneOff } from "lucide-react";
+import ShareMeetingButton from "./ShareMeetingButton";
+import useIsMobile from "../hooks/useIsMobile";
 
 export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camEnabled, setShowMeetingInfo }) {
+  const isMobile = useIsMobile();
+
   return (
     <footer
-      className="fixed bottom-0 left-0 w-full z-20 bg-neutral-800/95 backdrop-blur-md
-                 flex items-center justify-center gap-6 py-3
-                 border-t border-neutral-700
-                 safe-area-inset-bottom"
+      className={isMobile ? `md:hidden
+        fixed bottom-0 left-0 right-0
+        flex items-center justify-center gap-6
+        px-6 py-4
+        backdrop-blur-md bg-white/30
+        text-white` : `hidden md:flex
+        absolute bottom-0 left-0 right-0
+        p-5 items-center justify-center
+        backdrop-blur-md bg-white/30
+        text-white gap-6`}
+
     >
       <button
         onClick={toggleMic}
         className={`p-3 rounded-full bg-black-600 ${
-          micEnabled ? "bg-neutral-700" : "bg-red-600"
+          micEnabled ? "bg-neutral-800" : "bg-red-600"
         }`}
         title="Toggle Microphone"
       >
@@ -22,7 +33,7 @@ export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camE
       <button
         onClick={toggleCam}
         className={`p-3 rounded-full ${
-          camEnabled ? "bg-neutral-700" : "bg-red-600"
+          camEnabled ? "bg-neutral-800" : "bg-red-600"
         }`}
         title="Toggle Camera"
       >
@@ -39,11 +50,12 @@ export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camE
 
       <button
         onClick={() => setShowMeetingInfo((v) => !v)}
-        className="p-3 rounded-full bg-neutral-700"
+        className="p-3 rounded-full bg-neutral-800"
         title="Meeting info"
       >
-        <Info size={20} />
+        <Info size={22} />
       </button>
+
     </footer>
   );
 }

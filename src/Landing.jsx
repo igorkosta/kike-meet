@@ -33,7 +33,7 @@ export default function LandingPage() {
             <button
               onClick={() => navigate("/meet")}
               className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition">
-              Start a meeting
+              New meeting
             </button>
             {/* Join Meeting
             <div className="flex items-center gap-2 border border-gray-300 rounded-xl px-4 py-3 bg-white">
@@ -44,6 +44,22 @@ export default function LandingPage() {
               />
             </div>*/}
           </div>
+          {/* ⭐ Sticky mobile button */}
+      <div className="md:hidden fixed bottom-4 left-0 right-0 flex justify-center px-4">
+        <a
+          href="/meet"
+          className="
+            bg-blue-600 hover:bg-blue-700 text-white font-semibold
+            rounded-full shadow-lg
+            text-xl
+            px-10 py-4
+            transition
+            w-full max-w-md text-center
+          "
+        >
+          New Meeting
+        </a>
+      </div>
         </div>
 
         {/* Right Illustration */}

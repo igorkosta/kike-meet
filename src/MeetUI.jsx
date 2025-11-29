@@ -229,7 +229,11 @@ export default function MeetUI() {
         <div className="flex flex-1 flex-col md:flex-row items-center justify-center gap-4 mb-4">
 
           { isMobile ? (
-            <div className="sm:hidden w-full h-full relative">
+            <div className=" absolute inset-0
+              flex
+              items-center justify-center
+              bg-black"
+            >
               <video
                 ref={remoteVideoRef}
                 autoPlay
@@ -242,7 +246,7 @@ export default function MeetUI() {
                 ref={localVideoRef}
                 autoPlay
                 playsInline
-                className={`absolute top-4 right-4 w-24 h-32 rounded-lg shadow-lg ${!camEnabled ? "opacity-0" : "opacity-100"}`}
+                className={`absolute top-4 right-4 w-32 h-48 rounded-lg shadow-lg ${!camEnabled ? "opacity-0" : "opacity-100"}`}
               />
             </div>
           ) : (

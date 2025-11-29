@@ -13,9 +13,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "KiKe Buzz",
+        name: "Buzz",
         short_name: "Buzz",
-        description: "Communication Without Surveillance",
+        description: "Surveillance Free Communication",
         theme_color: "#000000",
         background_color: "#000000",
         display: "standalone",
