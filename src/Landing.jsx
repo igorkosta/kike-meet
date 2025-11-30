@@ -1,6 +1,7 @@
 import React from "react";
 import { Smartphone, Users, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { ReactTyped } from "react-typed";
 import FAB from "./components/FAB";
 import useIsMobile from "./hooks/useIsMobile";
 
@@ -22,7 +23,17 @@ export default function LandingPage() {
         {/* Left Text Block */}
         <div className="max-w-xl">
           <h1 className="text-4xl lg:text-6xl font-semibold leading-tight mb-6">
-            Free Your Calls
+            Calls without {" "}<br/>
+            <ReactTyped
+              className="text-blue-700"
+              strings={[
+                "borders",
+                "vpn",
+                "surveillance",
+                "tracking",
+                "fear",
+                "ads"
+              ]} typeSpeed={200} loop />
           </h1>
           {!isMobile && (
             <div>
