@@ -1,15 +1,17 @@
 import React from "react";
 import { Share2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import useIsMobile from "../hooks/useIsMobile";
 
 export default function ShareMeetingButton({ meetingId }) {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const url = `${window.location.origin + window.location.pathname}?id=${meetingId}`;
 
 
   function shareMeeting({
-    title = "Join my video call!",
-    text = "Click the link below to join my meeting"
+    title = t("header.shareMeeting.title"),
+    text = t('header.shareMeeting.text')
   }) {
     const meetingUrl = window.location.href;
 
@@ -37,7 +39,7 @@ export default function ShareMeetingButton({ meetingId }) {
           className="flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-full hover:bg-grey-700"
         >
           <Share2 size={18} />
-          Share Meeting
+          {t('header.shareMeeting.button')}
         </button>
       ) : (
         <button

@@ -30,7 +30,11 @@
   "header": {
     "yourId": "Ваш ID",
     "feedbackButton": "Обратная связь",
-    "shareMeetingButton": "Поделиться ссылкой"
+    "shareMeeting": {
+      "button": "Поделиться ссылкой",
+      "title": "Присоединяйся к моему видеозвонку!",
+      "text": "Нажмите ссылку ниже, чтобы присоединиться к звонку."
+    }
   },
   "footer": {
     "termsOfService": "",

@@ -27,10 +27,18 @@
       }
     }
   },
+  "meetingInfoBox": {
+    "title": "Your meeting's ready",
+    "description": "Share this link with others to invite them to the meeting."
+  },
   "header": {
     "yourId": "Your ID",
     "feedbackButton": "Feedback",
-    "shareMeetingButton": "Share Meeting"
+    "shareMeeting": {
+      "button": "Share Meeting",
+      "title": "Join my video call!",
+      "text": "Click the link below to join the call."
+    }
   },
   "footer": {
     "termsOfService": "Terms of Service",

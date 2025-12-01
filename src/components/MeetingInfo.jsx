@@ -1,7 +1,9 @@
 import React from  "react";
+import { useTranslation } from "react-i18next";
 import { Copy } from "lucide-react";
 
 export default function MeetingInfo({ closeWindow, meetingId }) {
+  const { t } = useTranslation();
   const meetingUrl = `${window.location.origin + window.location.pathname}?id=${meetingId}`;
 
   async function copyMeetingLink() {
@@ -14,7 +16,7 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
                     border border-neutral-700 z-20">
       <div className="flex justify-between items-start">
         <h3 className="text-base text-neutral-200">
-          Your meeting's ready
+          {t("meetingInfoBox.title")}
         </h3>
         <button
           onClick={closeWindow}
@@ -39,7 +41,7 @@ export default function MeetingInfo({ closeWindow, meetingId }) {
       </div>
 
       <p className="text-[11px] text-neutral-400 leading-tight">
-        Share this link with others to invite them to the meeting.
+        {t("meetingInfoBox.description")}
       </p>
     </div>
 )}
