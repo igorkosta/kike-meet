@@ -2,10 +2,13 @@ import React from "react";
 import { Video, Smartphone, Users, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ReactTyped } from "react-typed";
+import { useTranslation } from "react-i18next";
+
 import FAB from "./components/FAB";
 import useIsMobile from "./hooks/useIsMobile";
 
 export default function LandingPage() {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   return (
@@ -23,16 +26,16 @@ export default function LandingPage() {
         {/* Left Text Block */}
         <div className="max-w-xl">
           <h1 className="text-4xl lg:text-6xl font-semibold mb-6 backdrop-blur-md">
-            Calls without {" "}<br/>
+            {t('landing.title')} {" "}<br/>
             <ReactTyped
               className="text-blue-700 backdrop-blur-md bg-white/30"
               strings={[
-                "borders",
-                "vpn",
-                "surveillance",
-                "tracking",
-                "fear",
-                "ads"
+                t('landing.typed.text1'),
+                t('landing.typed.text2'),
+                t('landing.typed.text3'),
+                t('landing.typed.text4'),
+                t('landing.typed.text5'),
+                t('landing.typed.text6')
               ]}
               typeSpeed={200} loop
               backSpeed={20}
@@ -43,8 +46,7 @@ export default function LandingPage() {
           {!isMobile && (
             <div>
               <p className="text-lg text-gray-600 mb-8">
-                Connect, collaborate, and build relationships with your
-                friends — surveillance free.
+                {t('landing.description')}
               </p>
 
               <div className="flex items-center gap-3">
@@ -52,7 +54,7 @@ export default function LandingPage() {
                   onClick={() => navigate("/meet")}
                   className="text-m flex items-center gap-2 bg-blue-700 text-white px-4 py-4 rounded-full hover:bg-blue-600"
                 >
-                  <Video size={22} /> New meeting
+                  <Video size={22} /> {t('landing.createMeeting')}
                 </button>
               </div>
             </div>
@@ -86,33 +88,33 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="px-8 py-20 bg-white border-t border-gray-200">
         <h2 className="text-3xl font-semibold text-center mb-12">
-          Communication without surveillance
+          {t('slogan')}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
           <div className="flex flex-col items-center text-center">
             <Users className="w-12 h-12 text-blue-600 mb-4" />
-            <h3 className="font-medium text-xl mb-2">One-on-One Calls</h3>
-            <p className="text-gray-600">Invite anyone with a link. No installs or logins required.</p>
+            <h3 className="font-medium text-xl mb-2">{t('landing.features.p2p.title')}</h3>
+            <p className="text-gray-600">{t('landing.features.p2p.description')}</p>
           </div>
 
           <div className="flex flex-col items-center text-center">
             <ShieldCheck className="w-12 h-12 text-blue-600 mb-4" />
-            <h3 className="font-medium text-xl mb-2">Private & secure</h3>
-            <p className="text-gray-600">A true P2P communication without anyone in between.</p>
+            <h3 className="font-medium text-xl mb-2">{t('landing.features.security.title')}</h3>
+            <p className="text-gray-600">{t('landing.features.security.description')}</p>
           </div>
 
           <div className="flex flex-col items-center text-center">
             <Smartphone className="w-12 h-12 text-blue-600 mb-4" />
-            <h3 className="font-medium text-xl mb-2">Mobile Ready</h3>
-            <p className="text-gray-600">You can join from your phone or tablet.</p>
+            <h3 className="font-medium text-xl mb-2">{t('landing.features.device.title')}</h3>
+            <p className="text-gray-600">{t('landing.features.device.description')}</p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="py-6 px-8 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} Buzz — Communication without surveillance.
+        © {new Date().getFullYear()} Buzz — {t('slogan')}.
       </footer>
     </div>
   );

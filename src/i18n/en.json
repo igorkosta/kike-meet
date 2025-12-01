@@ -1,0 +1,40 @@
+{
+  "slogan": "Surveillance Free Communication",
+  "landing": {
+    "title": "Calls without",
+    "description": "Communicate with your family, friends and colleagues - surveillance free",
+    "createMeeting": "Create Meeting",
+    "typed": {
+      "text1": "borders",
+      "text2": "vpn",
+      "text3": "surveillance",
+      "text4": "tracking",
+      "text5": "fear",
+      "text6": "ads"
+    },
+    "features": {
+      "p2p": {
+        "title": "One-on-One Calls",
+        "description": "Invite anyone with a link. No installs or logins required."
+      },
+      "security": {
+        "title": "Private & Secure",
+        "description": "No data collected or shared with third parties."
+      },
+      "device": {
+        "title": "Mobile Ready",
+        "description": "Connect from any device."
+      }
+    }
+  },
+  "header": {
+    "yourId": "Your ID",
+    "feedbackButton": "Feedback",
+    "shareMeetingButton": "Share Meeting"
+  },
+  "footer": {
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
+  }
+}
+
