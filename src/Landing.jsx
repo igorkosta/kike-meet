@@ -1,5 +1,5 @@
 import React from "react";
-import { Smartphone, Users, ShieldCheck } from "lucide-react";
+import { Video, Smartphone, Users, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ReactTyped } from "react-typed";
 import FAB from "./components/FAB";
@@ -13,7 +13,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
         <div className="flex items-center gap-2 text-xl font-semibold">
-          <img src="/icon-192.png" alt="KiKé Buzz" className="w-10 h-10 mr-2 object-contain" />
+          <img src="/icon-192.png" alt="Buzz" className="w-10 h-10 mr-2 object-contain" />
           <h3>Buzz (ἄλφα)</h3>
         </div>
       </header>
@@ -22,10 +22,10 @@ export default function LandingPage() {
       <div className="flex flex-col lg:flex-row flex-1 items-center justify-center px-8 py-20 gap-14">
         {/* Left Text Block */}
         <div className="max-w-xl">
-          <h1 className="text-4xl lg:text-6xl font-semibold leading-tight mb-6">
+          <h1 className="text-4xl lg:text-6xl font-semibold mb-6 backdrop-blur-md">
             Calls without {" "}<br/>
             <ReactTyped
-              className="text-blue-700"
+              className="text-blue-700 backdrop-blur-md bg-white/30"
               strings={[
                 "borders",
                 "vpn",
@@ -33,7 +33,12 @@ export default function LandingPage() {
                 "tracking",
                 "fear",
                 "ads"
-              ]} typeSpeed={200} loop />
+              ]}
+              typeSpeed={200} loop
+              backSpeed={20}
+              cursorChar="|"
+              showCursor={true}
+            />
           </h1>
           {!isMobile && (
             <div>
@@ -45,8 +50,9 @@ export default function LandingPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => navigate("/meet")}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition">
-                  New meeting
+                  className="text-m flex items-center gap-2 bg-blue-700 text-white px-4 py-4 rounded-full hover:bg-blue-600"
+                >
+                  <Video size={22} /> New meeting
                 </button>
               </div>
             </div>

@@ -31,13 +31,22 @@ export default function ShareMeetingButton({ meetingId }) {
 
   return (
     <div className="text-xs">
-      <button
-        onClick={shareMeeting}
-        className="text-sm flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-full hover:bg-grey-700"
-      >
-        <Share2 size={18} />
-        { isMobile ? '' : 'Share Meeting' }
-      </button>
+      {!isMobile ? (
+        <button
+          onClick={shareMeeting}
+          className="flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-full hover:bg-grey-700"
+        >
+          <Share2 size={18} />
+          Share Meeting
+        </button>
+      ) : (
+        <button
+          onClick={shareMeeting}
+          className="p-3 rounded-full bg-neutral-800"
+        >
+          <Share2 size={22} />
+        </button>
+      )}
     </div>
   )
 }

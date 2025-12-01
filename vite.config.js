@@ -19,7 +19,7 @@ export default defineConfig({
         theme_color: "#000000",
         background_color: "#000000",
         display: "standalone",
-        start_url: "/",
+        start_url: "/meet",
         icons: [
           {
             src: "/icon-192.png",

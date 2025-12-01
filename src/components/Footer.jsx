@@ -48,13 +48,17 @@ export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camE
         <PhoneOff size={22} />
       </button>
 
-      <button
-        onClick={() => setShowMeetingInfo((v) => !v)}
-        className="p-3 rounded-full bg-neutral-800"
-        title="Meeting info"
-      >
-        <Info size={22} />
-      </button>
+      {isMobile ? (
+        <ShareMeetingButton />
+      ) : (
+        <button
+          onClick={() => setShowMeetingInfo((v) => !v)}
+          className="p-3 rounded-full bg-neutral-800"
+          title="Meeting info"
+        >
+          <Info size={22} />
+        </button>
+      )}
 
     </footer>
   );
