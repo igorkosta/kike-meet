@@ -31,6 +31,10 @@
     "title": "Your meeting's ready",
     "description": "Share this link with others to invite them to the meeting."
   },
+  "initOverlay": {
+    "title": "Tap to Join the Meeting",
+    "description": "We need your permission to start the camera and microphone."
+  },
   "header": {
     "yourId": "Your ID",
     "feedbackButton": "Feedback",

@@ -1,7 +1,9 @@
 import React from 'react';
 import { PhoneCall } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function InitOverlay({ handleFirstInteraction }) {
+  const { t } = useTranslation();
   // const searchParams = new URLSearchParams(window.location.search);
   // const joiningId = searchParams.get("id");
   // const isJoining = Boolean(joiningId);
@@ -30,9 +32,9 @@ export default function InitOverlay({ handleFirstInteraction }) {
       className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center text-white text-center p-6"
     >
       <div className="space-y-4">
-        <h1 className="text-2xl font-semibold">Tap to Join the Meeting</h1>
+        <h1 className="text-2xl font-semibold">{t('meetingInfoBox.title')}</h1>
         <p className="opacity-80">
-          We need your permission to start the camera and microphone.
+          {t('meetingInfoBox.description')}
         </p>
         <button className="bg-green-600 w-25 h-25 rounded-full text-white shadow-md items-center justify-center flex mx-auto">
           <PhoneCall size={50} className="animate-wiggle"/>
