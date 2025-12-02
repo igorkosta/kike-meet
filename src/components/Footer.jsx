@@ -12,11 +12,11 @@ export default function Footer({ toggleMic, toggleCam, endCall, micEnabled, camE
         fixed bottom-0 left-0 right-0
         flex items-center justify-center gap-6
         px-6 py-4
-        backdrop-blur-md bg-white/30
+        backdrop-blur-xs bg-white/20
         text-white` : `hidden md:flex
         absolute bottom-0 left-0 right-0
         p-5 items-center justify-center
-        backdrop-blur-md bg-white/30
+        backdrop-blur-xs bg-white/20
         text-white gap-6`}
 
     >

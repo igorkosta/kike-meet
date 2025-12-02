@@ -19,7 +19,8 @@ a {
   font-weight: 500;
   text-decoration: inherit;
 }
-a:hover {}
+a:hover {
+}
 
 body {
   margin: 0;
@@ -102,23 +103,4 @@ button:disabled::after {
       transform: rotate(3deg);
     }
   }
-}
-
-@keyframes fabPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6);
-  }
-  70% {
-    transform: scale(1.08);
-    box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-.animate-pulse-fab {
-  animation: fabPulse 2s infinite;
 }

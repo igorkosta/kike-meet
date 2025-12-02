@@ -26,7 +26,7 @@ export default function MeetUI() {
   const [micEnabled, setMicEnabled] = useState(true);
   const [camEnabled, setCamEnabled] = useState(true);
   const [remoteCameraEnabled, setRemoteCameraEnabled] = useState(true);
-  const [showMeetingInfo, setShowMeetingInfo] = useState(true);
+  const [showMeetingInfo, setShowMeetingInfo] = useState(!isMobile);
   const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false);
 
   const searchParams = new URLSearchParams(window.location.search);
@@ -217,7 +217,7 @@ export default function MeetUI() {
   };
 
   return (
-    <div className="overflow-hidden w-screen h-screen bg-neutral-900 text-neutral-100 flex flex-col">
+    <div className="overflow-hidden w-screen h-screen  text-neutral-100 flex flex-col">
       {showInitOverlay && (
         <InitOverlay handleFirstInteraction={firstInteraction} />
       )}

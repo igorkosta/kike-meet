@@ -36,7 +36,7 @@ export default function ShareMeetingButton({ meetingId }) {
       {!isMobile ? (
         <button
           onClick={shareMeeting}
-          className="flex items-center gap-2 bg-neutral-700 text-white px-4 py-2 rounded-full hover:bg-grey-700"
+          className="flex items-center gap-2 bg-neutral-800 text-white px-4 py-2 rounded-full hover:bg-grey-700"
         >
           <Share2 size={18} />
           {t('header.shareMeeting.button')}
