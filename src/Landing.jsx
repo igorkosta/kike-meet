@@ -24,7 +24,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <div className="flex flex-col lg:flex-row flex-1 items-center justify-center px-8 py-20 gap-14">
         {/* Left Text Block */}
-        <div className="max-w-xl">
+        <div className="max-w-xl basis-2/5">
           <h1 className="text-4xl lg:text-6xl font-semibold mb-6 backdrop-blur-md">
             {t('landing.title')} {" "}<br/>
             <ReactTyped
@@ -73,7 +73,7 @@ export default function LandingPage() {
             </div>
           </div>
         ) : (
-          <div className="max-w-lg w-full p-0 rounded-2xl shadow-md">
+          <div className="basis-2/3 max-w-2xl max-h-2xl p-0 m-5 rounded-2xl shadow-md">
             <div className="h-100 rounded-2xl overflow-hidden">
               <img
                 src="/buzz-desktop.png"
